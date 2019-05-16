@@ -19,7 +19,6 @@ const query = graphql`
             edges{
                 node{
                     title
-                    role
                     articleUrl
                     description{json}
                     publishedDate(formatString: "MMMM Do, YYYY")
@@ -73,7 +72,7 @@ class CollapsePage extends Component {
                 render={data=>(
                     <MDBContainer fluid>
                         <MDBRow>
-                            <MDBCol md="3 pt-5 pb-5 bg-dark" style={{color:'white'}}>
+                            <MDBCol md="3 pt-5 pb-5 bg-info" style={{color:'white'}}>
                                 {data.allContentfulAuthor.edges.map(edge=>{
                                     return(
                                         <MDBContainer className="mt-5 text-center">
@@ -93,22 +92,22 @@ class CollapsePage extends Component {
                                             <h4 className="pb-5 text-center text-justify">{edge.node.aboutMe}</h4>
                                             {edge.node.links.linkedin && (
                                                 <a href={edge.node.links.linkedin}>
-                                                    <MDBIcon fab icon="linkedin" size="2x" className=" pr-5"/>
+                                                    <MDBIcon fab icon="linkedin" size="2x" className="white-text pr-5"/>
                                                 </a>
                                             )}
                                             {edge.node.links.github && (
                                                 <a href={edge.node.links.github}>
-                                                    <MDBIcon fab icon="github" size="2x" className=" pr-5"/>
+                                                    <MDBIcon fab icon="github" size="2x" className="white-text pr-5"/>
                                                 </a>
                                             )}
                                             {edge.node.links.email && (
                                                 <a href={'mailto:'+edge.node.links.email}>
-                                                    <MDBIcon icon="envelope" size="2x" className=" pr-5"/>
+                                                    <MDBIcon icon="envelope" size="2x" className="white-text pr-5"/>
                                                 </a>
                                             )}
                                             {edge.node.links.contact && (
                                                 <a href={"tel:"+edge.node.links.contact}>
-                                                    <MDBIcon icon="phone" size="2x" className=" pr-5"/>
+                                                    <MDBIcon icon="phone" size="2x" className="white-text pr-5"/>
                                                 </a>
                                             )}
                                             
@@ -135,9 +134,6 @@ class CollapsePage extends Component {
                                                             <div className="text-justify">
                                                                 {documentToReactComponents(edge.node.description.json)}
                                                             </div>
-                                                        )}
-                                                        {edge.node.role && (
-                                                            <h6 className="pt-2 text-left"><b>Category: {edge.node.role}</b></h6>
                                                         )}
                                                     </MDBCardText>
                                                 </MDBCardBody>
