@@ -54,16 +54,7 @@ const query = graphql`
     }
 `
 
-class CollapsePage extends Component {
-    state = {
-        collapseID: ""
-    }
-    
-    toggleCollapse = collapseID => () => {
-        this.setState(prevState => ({
-            collapseID: prevState.collapseID !== collapseID ? collapseID : ""
-        }));
-    }
+class HomePage extends Component {
     
     render() {
       return (
@@ -90,27 +81,28 @@ class CollapsePage extends Component {
                                             />
                                             <h1 className="display-3 pb-5">{edge.node.name.charAt(0).toUpperCase() + edge.node.name.slice(1)}</h1>
                                             <h4 className="pb-5 text-center text-justify">{edge.node.aboutMe}</h4>
-                                            {edge.node.links.linkedin && (
-                                                <a href={edge.node.links.linkedin}>
-                                                    <MDBIcon fab icon="linkedin" size="2x" className="white-text pr-5"/>
-                                                </a>
-                                            )}
-                                            {edge.node.links.github && (
-                                                <a href={edge.node.links.github}>
-                                                    <MDBIcon fab icon="github" size="2x" className="white-text pr-5"/>
-                                                </a>
-                                            )}
-                                            {edge.node.links.email && (
-                                                <a href={'mailto:'+edge.node.links.email}>
-                                                    <MDBIcon icon="envelope" size="2x" className="white-text pr-5"/>
-                                                </a>
-                                            )}
-                                            {edge.node.links.contact && (
-                                                <a href={"tel:"+edge.node.links.contact}>
-                                                    <MDBIcon icon="phone" size="2x" className="white-text pr-5"/>
-                                                </a>
-                                            )}
-                                            
+                                            <div>
+                                              {edge.node.links.linkedin && (
+                                                  <a href={edge.node.links.linkedin}>
+                                                      <MDBIcon fab icon="linkedin" size="2x" className="white-text pr-5"/>
+                                                  </a>
+                                              )}
+                                              {edge.node.links.github && (
+                                                  <a href={edge.node.links.github}>
+                                                      <MDBIcon fab icon="github" size="2x" className="white-text pr-5"/>
+                                                  </a>
+                                              )}
+                                              {edge.node.links.email && (
+                                                  <a href={'mailto:'+edge.node.links.email}>
+                                                      <MDBIcon icon="envelope" size="2x" className="white-text pr-5"/>
+                                                  </a>
+                                              )}
+                                              {edge.node.links.contact && (
+                                                  <a href={"tel:"+edge.node.links.contact}>
+                                                      <MDBIcon icon="phone" size="2x" className="white-text pr-5"/>
+                                                  </a>
+                                              )}
+                                            </div>
                                         </MDBContainer>
                                     )
                                 })}
@@ -120,27 +112,29 @@ class CollapsePage extends Component {
                                     {data.allContentfulArticles.edges.map((edge)=>{
                                         return(
                                             <>
-                                            <MDBCard className="m-3 text-center hoverable" style={{ width: "22rem" }} >
-                                                <MDBCardImage className="img-fluid" src={edge.node.image.file.url} waves />
-                                                <MDBCardBody>
-                                                    {edge.node.title && (
-                                                        <MDBCardTitle className="p-2">{edge.node.title}</MDBCardTitle>
+                                                <MDBCard className="m-3 text-center hoverable" style={{ width: "22rem" }} >
+                                                    <a href={edge.node.articleUrl} target="_blank" rel="noopener noreferrer" style={{'cursor':'pointer'}}>
+                                                      <MDBCardImage className="img-fluid" src={edge.node.image.file.url} waves />
+                                                    </a>
+                                                    <MDBCardBody>
+                                                        {edge.node.title && (
+                                                            <MDBCardTitle className="p-2">{edge.node.title}</MDBCardTitle>
+                                                        )}
+                                                        <MDBCardText >
+                                                            {edge.node.publishedDate && (
+                                                                <p className="border-bottom border-info">{edge.node.publishedDate}</p>
+                                                            )}
+                                                            {edge.node.description && (
+                                                                <div className="text-justify">
+                                                                    {documentToReactComponents(edge.node.description.json)}
+                                                                </div>
+                                                            )}
+                                                        </MDBCardText>
+                                                    </MDBCardBody>
+                                                    {edge.node.articleUrl && (
+                                                        <MDBBtn href={edge.node.articleUrl} color="info" target="_blank" rel="noopener noreferrer">view</MDBBtn>
                                                     )}
-                                                    <MDBCardText >
-                                                        {edge.node.publishedDate && (
-                                                            <p className="border-bottom border-info">{edge.node.publishedDate}</p>
-                                                        )}
-                                                        {edge.node.description && (
-                                                            <div className="text-justify">
-                                                                {documentToReactComponents(edge.node.description.json)}
-                                                            </div>
-                                                        )}
-                                                    </MDBCardText>
-                                                </MDBCardBody>
-                                                {edge.node.articleUrl && (
-                                                    <MDBBtn href={edge.node.articleUrl} color="info" target="_blank" rel="noopener noreferrer">view</MDBBtn>
-                                                )}
-                                            </MDBCard>
+                                                </MDBCard>
                                             </>
                                         )
                                     })}
@@ -154,4 +148,4 @@ class CollapsePage extends Component {
     }
 }
     
-export default CollapsePage;
+export default HomePage;
