@@ -68,19 +68,25 @@ class HomePage extends Component {
                                     return(
                                         <MDBContainer className="mt-5 text-center">
                                             <Helmet title={edge.node.name.charAt(0).toUpperCase() + edge.node.name.slice(1)}/>
-                                            <img
+                                            {edge.node.avatar.file.url && (
+                                              <img
                                                 src={edge.node.avatar.file.url}
                                                 className="img-fluid mb-3"
                                                 alt=""
                                                 style={{
-                                                    'vertical-align': 'middle',
-                                                    width: '250px',
-                                                    height: '250px',
-                                                    'border-radius': '50%'
+                                                  'vertical-align': 'middle',
+                                                  width: '250px',
+                                                  height: '250px',
+                                                  'border-radius': '50%'
                                                 }}
-                                            />
-                                            <h1 className="display-3 pb-5">{edge.node.name.charAt(0).toUpperCase() + edge.node.name.slice(1)}</h1>
-                                            <h4 className="pb-5 text-center text-justify">{edge.node.aboutMe}</h4>
+                                              />
+                                            )}
+                                            {edge.node.name && (
+                                              <h1 className="mt-3 pb-5">{edge.node.name.charAt(0).toUpperCase() + edge.node.name.slice(1)}</h1>
+                                            )}
+                                            {edge.node.aboutMe && (
+                                              <h4 className="pb-5 text-center text-justify">{edge.node.aboutMe}</h4>
+                                            )}
                                             <div>
                                               {edge.node.links.linkedin && (
                                                   <a href={edge.node.links.linkedin}>
