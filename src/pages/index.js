@@ -68,7 +68,7 @@ class HomePage extends Component {
                                     return(
                                         <MDBContainer className="mt-5 text-center">
                                             <Helmet title={edge.node.name.charAt(0).toUpperCase() + edge.node.name.slice(1)}/>
-                                            {edge.node.avatar.file.url && (
+                                            {edge.node.avatar && (
                                               <img
                                                 src={edge.node.avatar.file.url}
                                                 className="img-fluid mb-3"
@@ -119,9 +119,14 @@ class HomePage extends Component {
                                         return(
                                             <>
                                                 <MDBCard className="m-3 text-center hoverable" style={{ width: "22rem" }} >
-                                                    <a href={edge.node.articleUrl} target="_blank" rel="noopener noreferrer" style={{'cursor':'pointer'}}>
-                                                      <MDBCardImage className="img-fluid" src={edge.node.image.file.url} waves />
-                                                    </a>
+                                                    {edge.node.image && (
+                                                        <a href={edge.node.articleUrl} target="_blank"
+                                                           rel="noopener noreferrer" style={{ 'cursor': 'pointer' }}>
+                                                          <MDBCardImage className="img-fluid" src={edge.node.image.file.url}
+                                                                        waves/>
+                                                        </a>
+                                                      )
+                                                    }
                                                     <MDBCardBody>
                                                         {edge.node.title && (
                                                             <MDBCardTitle className="p-2">{edge.node.title}</MDBCardTitle>
