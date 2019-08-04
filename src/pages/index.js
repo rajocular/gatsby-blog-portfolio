@@ -1,17 +1,23 @@
-import React, { Component } from "react";
+import React from "react";
 import { Helmet } from "react-helmet"
-import { 
-    MDBContainer, MDBIcon, MDBBtn,
-    MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBRow, MDBCol
-} from "mdbreact";
-import { graphql, StaticQuery } from "gatsby"
-import {documentToReactComponents} from "@contentful/rich-text-react-renderer"
-
-import "bootstrap/dist/css/bootstrap.min.css"
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import "bootstrap-css-only/css/bootstrap.min.css";
-import "mdbreact/dist/css/mdb.css";
-import pageStyles from '../styles/style.module.scss'
+import {
+  Grid,
+  makeStyles,
+  Divider,
+  Typography,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+} from "@material-ui/core";
+import {
+  FaLinkedin,
+  FaGithub,
+  FaPhone,
+  FaEnvelope
+} from 'react-icons/fa';
+import { graphql, StaticQuery } from "gatsby";
+import {documentToReactComponents} from "@contentful/rich-text-react-renderer";
 
 const query = graphql`
     query{
@@ -54,109 +60,176 @@ const query = graphql`
     }
 `
 
-class HomePage extends Component {
-    
-    render() {
-      return (
-            <StaticQuery 
-                query={query}
-                render={data=>(
-                    <MDBContainer fluid>
-                        <MDBRow>
-                            <MDBCol md="3 pt-5 pb-5 bg-info" style={{color:'white'}}>
-                                {data.allContentfulAuthor.edges.map(edge=>{
-                                    return(
-                                        <MDBContainer className="mt-5 text-center">
-                                            <Helmet title={edge.node.name.charAt(0).toUpperCase() + edge.node.name.slice(1)}/>
-                                            {edge.node.avatar && (
-                                              <img
-                                                src={edge.node.avatar.file.url}
-                                                className="img-fluid mb-3"
-                                                alt=""
-                                                style={{
-                                                  'vertical-align': 'middle',
-                                                  width: '250px',
-                                                  height: '250px',
-                                                  'border-radius': '50%'
-                                                }}
-                                              />
-                                            )}
-                                            {edge.node.name && (
-                                              <h1 className="mt-3 pb-5">{edge.node.name.charAt(0).toUpperCase() + edge.node.name.slice(1)}</h1>
-                                            )}
-                                            {edge.node.aboutMe && (
-                                              <h4 className="pb-5 text-center text-justify">{edge.node.aboutMe}</h4>
-                                            )}
-                                            <div>
-                                              {edge.node.links.linkedin && (
-                                                  <a href={edge.node.links.linkedin}>
-                                                      <MDBIcon fab icon="linkedin" size="2x" className="white-text pr-5"/>
-                                                  </a>
-                                              )}
-                                              {edge.node.links.github && (
-                                                  <a href={edge.node.links.github}>
-                                                      <MDBIcon fab icon="github" size="2x" className="white-text pr-5"/>
-                                                  </a>
-                                              )}
-                                              {edge.node.links.email && (
-                                                  <a href={'mailto:'+edge.node.links.email}>
-                                                      <MDBIcon icon="envelope" size="2x" className="white-text pr-5"/>
-                                                  </a>
-                                              )}
-                                              {edge.node.links.contact && (
-                                                  <a href={"tel:"+edge.node.links.contact}>
-                                                      <MDBIcon icon="phone" size="2x" className="white-text pr-5"/>
-                                                  </a>
-                                              )}
-                                            </div>
-                                        </MDBContainer>
-                                    )
-                                })}
-                            </MDBCol>
-                            <MDBCol className={pageStyles.scrollContent}>
-                                <div className="d-flex flex-wrap justify-content-center">
-                                    {data.allContentfulArticles.edges.map((edge)=>{
-                                        return(
-                                            <>
-                                                <MDBCard className="m-3 text-center hoverable" style={{ width: "22rem" }} >
-                                                    {edge.node.image && (
-                                                        <a href={edge.node.articleUrl} target="_blank"
-                                                           rel="noopener noreferrer" style={{ 'cursor': 'pointer' }}>
-                                                          <MDBCardImage className="img-fluid" src={edge.node.image.file.url}
-                                                                        waves/>
-                                                        </a>
-                                                      )
-                                                    }
-                                                    <MDBCardBody>
-                                                        {edge.node.title && (
-                                                            <MDBCardTitle className="p-2">{edge.node.title}</MDBCardTitle>
-                                                        )}
-                                                        <MDBCardText >
-                                                            {edge.node.publishedDate && (
-                                                                <p className="border-bottom border-info">{edge.node.publishedDate}</p>
-                                                            )}
-                                                            {edge.node.description && (
-                                                                <div className="text-justify">
-                                                                    {documentToReactComponents(edge.node.description.json)}
-                                                                </div>
-                                                            )}
-                                                        </MDBCardText>
-                                                    </MDBCardBody>
-                                                    {edge.node.articleUrl && (
-                                                        <MDBBtn href={edge.node.articleUrl} color="info" target="_blank" rel="noopener noreferrer">view</MDBBtn>
-                                                    )}
-                                                </MDBCard>
-                                            </>
-                                        )
-                                    })}
-                                </div>
-                            </MDBCol>
-                        </MDBRow>
-                    </MDBContainer>
-                )}
-            />
-        );
+const useStyles = makeStyles({
+  titleContainer: {
+    margin: 10,
+    width: '100%',
+    font: 'Open Sans',
+  },
+  articlesContainer: {
+    margin: '5rem auto',
+  },
+  image: {
+    width: 200,
+    height: 200,
+  },
+  divider: {
+    margin: 0,
+  },
+  contactIcon: {
+    color: 'black',
+    fontSize: '2rem',
+  },
+  card: {
+    maxWidth: 345,
+    border: '1px solid black',
+    '&:hover': {
+      boxShadow: '0px 0px 40px 0px rgba(0,0,0, 0.5)',
     }
+  },
+  media: {
+    height: 340,
+  },
+  action: {
+    textDecoration: 'none',
+    color: 'black',
+    '&:hover': {
+      color: 'black',
+    }
+  }
+});
+
+const HomePage = () => {
+  const classes = useStyles();
+  return (
+    <StaticQuery
+      query={query}
+      render={data => {
+        const authorDetails = data.allContentfulAuthor.edges[0].node;
+        const authorContactDetails = authorDetails.links;
+        const articles = data.allContentfulArticles.edges;
+        return (
+          <Grid container direction="column">
+            <Helmet title={authorDetails.name.charAt(0).toUpperCase() + authorDetails.name.slice(1)}/>
+            <Grid
+              item
+              container
+              alignItems="center"
+              spacing={6}
+              className={classes.titleContainer}
+            >
+              <Grid item>
+                {authorDetails.avatar
+                  && (
+                  <img
+                    src={authorDetails.avatar.file.url}
+                    className={classes.image}
+                    alt="featureImage"
+                  />
+                )}
+                <Grid
+                  item
+                  container
+                  spacing={3}
+                  justify="center"
+                >
+                  <Grid item>
+                    {authorContactDetails.linkedin && (
+                      <a href={authorContactDetails.linkedin}>
+                        <FaLinkedin className={classes.contactIcon}/>
+                      </a>
+                    )}
+                  </Grid>
+                  <Grid item>
+                    {authorContactDetails.github && (
+                      <a href={authorContactDetails.github}>
+                        <FaGithub className={classes.contactIcon}/>
+                      </a>
+                    )}
+                  </Grid>
+                  <Grid item>
+                    {authorContactDetails.email && (
+                      <a href={'mailto:'+ authorContactDetails.email}>
+                        <FaEnvelope className={classes.contactIcon}/>
+                      </a>
+                    )}
+                  </Grid>
+                  <Grid item>
+                    {authorContactDetails.contact && (
+                      <a href={"tel:"+ authorContactDetails.contact}>
+                        <FaPhone className={classes.contactIcon}/>
+                      </a>
+                    )}
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item>
+                {authorDetails.name && (
+                  <Typography variant="h3">
+                    {authorDetails.name.charAt(0).toUpperCase() + authorDetails.name.slice(1)}
+                  </Typography>
+                )}
+                {authorDetails.aboutMe && (
+                  <Typography variant="body1">
+                    {authorDetails.aboutMe}
+                  </Typography>
+                )}
+              </Grid>
+
+            </Grid>
+            <Divider variant="fullWidth" className={classes.divider}/>
+            <Grid
+              item
+              container
+              alignItems="center"
+              spacing={6}
+              lg={9}
+              wrap
+              className={classes.articlesContainer}
+            >
+              {articles.map(data => {
+                const article = data.node;
+                const { image, title, description, publishedDate, articleUrl } = article;
+                return (
+                  <Grid item>
+                    <Card className={classes.card}>
+                      <a
+                        href={articleUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={classes.action}
+                      >
+                        <CardActionArea>
+                          <CardMedia
+                            className={classes.media}
+                            image={image.file.url}
+                            title={title}
+                            component='img'
+                          />
+                          <CardContent>
+                            <Typography variant="h5" component="h2" align="center">
+                              {title}
+                            </Typography>
+                            <Typography variant="p" component="p" align="center">
+                              {publishedDate}
+                            </Typography>
+                            <Divider variant="inset" className={classes.divider}/>
+                            <Typography variant="body2" color="textSecondary" component="p" align="justify">
+                              {documentToReactComponents(description.json)}
+                            </Typography>
+                          </CardContent>
+                        </CardActionArea>
+                      </a>
+                    </Card>
+                  </Grid>
+                )
+              })}
+            </Grid>
+          </Grid>
+        )}
+      }
+    />
+  )
 }
     
 export default HomePage;
