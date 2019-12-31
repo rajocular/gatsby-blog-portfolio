@@ -10,7 +10,6 @@ import {
   FaPhone,
   FaEnvelope
 } from 'react-icons/fa';
-import { Apps as HomeIcon } from '@material-ui/icons';
 
 const drawerWidth = 80;
 
@@ -25,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    backgroundColor: 'transparent',
+    backgroundColor: '#566573',
     border: 'none',
   },
   link: {
@@ -38,14 +37,13 @@ const useStyles = makeStyles(theme => ({
     color: '#D6DBDF',
     height: '32px',
     width: '32px',
-
     '&:hover': {
       color: '#000'
     }
   }
 }));
 
-const Sidebar = ({ contactInfo, showHomeIcon, onClick }) => {
+const Sidebar = ({ contactInfo }) => {
   const classes = useStyles();
   const {
     linkedin,
@@ -69,11 +67,6 @@ const Sidebar = ({ contactInfo, showHomeIcon, onClick }) => {
         justify="center"
         className={classes.linkContainer}
       >
-        {showHomeIcon && (
-          <Grid item className={classes.link} onClick={onClick}>
-            <HomeIcon className={classes.icon} />
-          </Grid>
-        )}
         {linkedin && (
           <Grid item className={classes.link}>
             <a href={linkedin} target="_blank" rel="noopener noreferrer">

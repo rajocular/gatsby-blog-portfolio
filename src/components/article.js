@@ -5,61 +5,62 @@ import {
   Avatar,
   makeStyles,
 } from '@material-ui/core';
-import { ArrowBack } from '@material-ui/icons';
-import {documentToReactComponents} from "@contentful/rich-text-react-renderer";
 
 const useStyles = makeStyles({
-  container: {
-    flexDirection: 'column',
-    marginTop: 60,
-  },
-  navigation: {
-    display: 'flex',
+  card: {
     alignItems: 'center',
-    cursor: 'pointer',
-    padding: 8,
+    flexDirection: 'column',
+    padding: '32px',
   },
   avatar: {
     height: 150,
     width: 150,
+
+    '&:hover': {
+      cursor: 'pointer',
+      boxShadow: '0px 0px 30px 2px rgba(0,0,0, 0.5)',
+    },
   },
-  detail: {
-    padding: 8,
+  title: {
+    padding: 16,
+    fontFamily: 'Georgia, serif'
+  },
+  description: {
+    fontFamily: 'Georgia, serif'
   }
 });
 
-const Article = ({ article, onClick }) => {
+const Article = ({ article }) => {
   const classes = useStyles();
   const {
     image,
     title,
     articleUrl,
     description,
-    publishedDate,
   } = article;
 
   return (
-    <Grid container className={classes.container}>
-      <Grid item onClick={() => onClick()} className={classes.navigation}>
-        <ArrowBack />
-        <Typography variant="subtitle1">Back</Typography>
-      </Grid>
-      <Grid item className={classes.detail}>
-        <Avatar src={image.file.url} className={classes.avatar} />
-      </Grid>
-      <Grid item className={classes.detail}>
-        <Typography variant="h4">{title}</Typography>
-      </Grid>
-      <Grid item className={classes.detail}>
-        <Typography>{publishedDate}</Typography>
-      </Grid>
-      <Grid item className={classes.detail}>
-        <Typography>{documentToReactComponents(description.json)}</Typography>
-      </Grid>
-      <Grid item className={classes.detail}>
+    <Grid
+      item
+      container
+      xs={12}
+      md={4}
+      className={classes.card}
+    >
+      <Grid item>
         <a href={articleUrl} target="_blank" rel="noopener noreferrer">
-          <Typography>click here to see more</Typography>
+          <Avatar src={image.file.url} className={classes.avatar} />
         </a>
+      </Grid>
+      <Grid item>
+        <Typography variant="h5" className={classes.title}>
+          {title}
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant="body1" className={classes.description}>
+          {description && description.description}
+        </Typography>
       </Grid>
     </Grid>
   );

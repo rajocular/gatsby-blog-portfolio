@@ -9,23 +9,21 @@ import {
 const useStyles = makeStyles(theme => ({
   container: {
     padding: 24,
-    flexDirection: 'column',
     alignItems: 'center',
   },
   avatarContainer: {
     marginBottom: 24,  
   },
   avatar: {
-    height: 300,
-    width: 300,
-    [theme.breakpoints.down('sm')]: {
-      height: 150,
-      width: 150,
-    }
+    height: 150,
+    width: 150
   },
   aboutMe: {
     marginTop: 16,
   },
+  text: {
+    fontFamily: 'Georgia, serif'
+  }
 }))
 
 const MyInfo = ({ info }) => {
@@ -38,18 +36,20 @@ const MyInfo = ({ info }) => {
 
   return (
     <Grid container className={classes.container}>
-      <Grid item xs={12} className={classes.avatarContainer}>
+      <Grid item xs={12} md={2} className={classes.avatarContainer}>
         <Avatar src={avatar.file.url} className={classes.avatar} />
       </Grid>
-      <Grid item xs={12}>
-        <Typography variant="h4">
-          {name.charAt(0).toUpperCase() + name.slice(1)}
-        </Typography>
-      </Grid>
-      <Grid item xs={12} md={6} className={classes.aboutMe}>
-        <Typography variant="subtitle1">
-          {aboutMe}
-        </Typography>
+      <Grid item container xs={12} md={10}>
+        <Grid item xs={12}>
+          <Typography variant="h4" className={classes.text}>
+            {name.charAt(0).toUpperCase() + name.slice(1)}
+          </Typography>
+        </Grid>
+        <Grid item className={classes.aboutMe} xs={12} md={8}>
+          <Typography variant="subtitle1" className={classes.text}>
+            {aboutMe}
+          </Typography>
+        </Grid>
       </Grid>
     </Grid>
   );

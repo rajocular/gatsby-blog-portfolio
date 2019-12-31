@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { Helmet } from "react-helmet"
 import {
   Grid,
   makeStyles,
   Divider,
-  Typography,
-  CssBaseline,
-  Avatar,
+  CssBaseline
 } from "@material-ui/core";
 
 import { graphql, StaticQuery } from "gatsby";
@@ -22,7 +20,9 @@ const query = graphql`
                 node{
                     title
                     articleUrl
-                    description{json}
+                    description{
+                      description
+                    }
                     publishedDate(formatString: "MMMM Do, YYYY")
                     image{
                         file{
@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: 'transparent',
     padding: theme.spacing(3),
   },
   titleContainer: {
@@ -74,34 +74,13 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     marginTop: '32px',
   },
-  avatar: {
-    height: 150,
-    width: 150,
-
-    '&:hover': {
-      cursor: 'pointer',
-      boxShadow: '0px 0px 40px 0px rgba(0,0,0, 0.5)',
-    },
-  },
-  title: {
-    padding: 16,
-    '&:hover': {
-      cursor: 'pointer'
-    },
-  },
   divider: {
     margin: 0,
-  },
-  card: {
-    alignItems: 'center',
-    flexDirection: 'column',
-    padding: '32px',
   },
 }));
 
 const HomePage = () => {
   const classes = useStyles();
-  const [selectedArticle, setArticle] = useState(undefined);
 
   return (
     <StaticQuery
@@ -115,53 +94,19 @@ const HomePage = () => {
           <div className={classes.root}>
             <Helmet title={authorDetails.name.charAt(0).toUpperCase() + authorDetails.name.slice(1)}/>
             <CssBaseline />
-            <Sidebar contactInfo={authorContactDetails} showHomeIcon={selectedArticle} onClick={() => setArticle(undefined)} />
+            <Sidebar contactInfo={authorContactDetails} />
             <main className={classes.content}>
-              {selectedArticle
-                ? <Article article={selectedArticle} onClick={() => setArticle(undefined)} />
-                : (
-                <Grid container direction="column">
-                  <MyInfo info={authorDetails} />
-                  <Divider variant="fullWidth" className={classes.divider}/>
-                  <Grid
-                    item
-                    container
-                    className={classes.articlesContainer}
-                  >
-                    {articles.map(data => {
-                      const article = data.node;
-                      const { image, title } = article;
-                      return (
-                        <Grid
-                          item
-                          container
-                          xs={12}
-                          md={4}
-                          className={classes.card}
-                          key={article.title}
-                        >
-                          <Grid item>
-                            <Avatar
-                              src={image.file.url}
-                              className={classes.avatar}
-                              onClick={() => setArticle(article)}
-                            />
-                          </Grid>
-                          <Grid item>
-                            <Typography
-                              className={classes.title}
-                              onClick={() => setArticle(article)}
-                            >
-                              {title}
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                      )
-                    })}
-                  </Grid>
+              <Grid container direction="column">
+                <MyInfo info={authorDetails} />
+                <Divider variant="fullWidth" className={classes.divider}/>
+                <Grid
+                  item
+                  container
+                  className={classes.articlesContainer}
+                >
+                  {articles.map(data => <Article article={data.node} key={data.node.title} />)}
                 </Grid>
-                )
-              }
+              </Grid>
             </main>
           </div>
         )}
