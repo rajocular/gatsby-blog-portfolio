@@ -1,34 +1,96 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import classNames from 'classnames';
 import {
   Grid,
   Typography,
   Avatar,
+  Divider,
   makeStyles,
+  useMediaQuery,
 } from '@material-ui/core';
 
-const useStyles = makeStyles({
-  card: {
+const useStyles = makeStyles(theme => ({
+  container: {
     alignItems: 'center',
     flexDirection: 'column',
+    perspective: '1000px',
+
+    '&:hover': {
+      cursor: 'pointer'
+    },
+
+    [theme.breakpoints.up('lg')]: {
+      height: '400px',
+      padding: '32px',
+      
+      '&:hover $cardContainer': {
+        transform: 'rotateY(180deg)',
+      },
+    }
+  },
+  cardContainer: {
+    width: '100%',
+    height: '100%',
+    textAlign: 'center',
+    transition: 'transform 0.8s',
+    transformStyle: 'preserve-3d',
+
+    [theme.breakpoints.up('lg')]: {
+      position: 'relative',
+      boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
+      borderRadius: '16px',
+    }
+  },
+  card: {
     padding: '32px',
+    width: '100%',
+    height: '100%',
+    backfaceVisibility: 'hidden',
+
+    [theme.breakpoints.up('lg')]: {
+      position: 'absolute',
+    }
+  },
+  cardFront: {
+    justifyContent: 'center',
+  },
+  cardBack: {
+    transform: 'rotateY(180deg)',
+    display: 'flex',
+    backgroundColor: '#566573',
+    borderRadius: '16px',
   },
   avatar: {
     height: 150,
     width: 150,
-
-    '&:hover': {
-      cursor: 'pointer',
-      boxShadow: '0px 0px 30px 2px rgba(0,0,0, 0.5)',
-    },
+    position: 'unset'
   },
   title: {
     padding: 16,
+    width: '100%',
+    textAlign: 'center',
+    marginTop: '8px',
     fontFamily: 'Georgia, serif'
   },
+  descriptionContainer: {
+    padding: '0 32px 8px 32px',
+  },
   description: {
-    fontFamily: 'Georgia, serif'
-  }
-});
+    fontFamily: 'Georgia, serif',
+    color: 'white',
+    fontWeight: 'bold',
+    margin: 'auto',
+
+    [theme.breakpoints.down('md')]: {
+      color: 'black',
+      fontWeight: 'normal'
+    }
+  },
+  divider: {
+    margin: 0,
+    width: '100%'
+  },
+}));
 
 const Article = ({ article }) => {
   const classes = useStyles();
@@ -38,31 +100,57 @@ const Article = ({ article }) => {
     articleUrl,
     description,
   } = article;
+  const isSmall = useMediaQuery('(max-width: 1280px)');
+
+  const openLink = () => {
+    const newTab = window.open(articleUrl, '_blank');
+    newTab.focus()
+  }
 
   return (
-    <Grid
-      item
-      container
-      xs={12}
-      md={4}
-      className={classes.card}
-    >
-      <Grid item>
-        <a href={articleUrl} target="_blank" rel="noopener noreferrer">
-          <Avatar src={image.file.url} className={classes.avatar} />
-        </a>
+    <Fragment>
+      <Grid
+        item
+        container
+        xs={12}
+        lg={4}
+        className={classes.container}
+        onClick={() => openLink()}
+      >
+        <Grid className={classes.cardContainer}>
+
+          <Grid item container className={classNames(classes.card, classes.cardFront)}>
+            <Avatar src={image.file.url} className={classes.avatar} />
+            <Typography variant="h5" className={classes.title}>
+              {title}
+            </Typography>
+          </Grid>
+
+          {!isSmall
+            && (
+            <Grid item className={classNames(classes.card, classes.cardBack)}>
+              <Typography variant="body1" className={classes.description}>
+                {description && description.description}
+              </Typography>
+            </Grid>
+            )
+          }
+        </Grid>
+
       </Grid>
-      <Grid item>
-        <Typography variant="h5" className={classes.title}>
-          {title}
-        </Typography>
-      </Grid>
-      <Grid item>
-        <Typography variant="body1" className={classes.description}>
-          {description && description.description}
-        </Typography>
-      </Grid>
-    </Grid>
+      {isSmall
+        && (
+        <Fragment>
+          <Grid item className={classes.descriptionContainer}>
+            <Typography variant="body1" className={classes.description}>
+              {description && description.description}
+            </Typography>
+          </Grid>
+          <Divider className={classes.divider}/>
+        </Fragment>
+        )
+      }
+    </Fragment>
   );
 }
 
