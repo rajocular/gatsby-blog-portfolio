@@ -15,7 +15,7 @@ import Article from "../components/article";
 
 const query = graphql`
     query{
-        allContentfulArticles(sort:{fields: publishedDate,order:DESC}){
+        allContentfulArticles(sort: {fields:order, order:ASC}){
             edges{
                 node{
                     title
@@ -23,7 +23,6 @@ const query = graphql`
                     description{
                       description
                     }
-                    publishedDate(formatString: "MMMM Do, YYYY")
                     image{
                         file{
                             fileName
