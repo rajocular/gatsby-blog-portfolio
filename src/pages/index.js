@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { Helmet } from "react-helmet"
+import Lottie from 'react-lottie';
 import {
   Grid,
   makeStyles,
@@ -13,6 +14,7 @@ import { graphql, StaticQuery } from "gatsby";
 import MyInfo from '../components/my-info';
 import Sidebar from "../components/sidebar";
 import Article from "../components/article";
+import * as animationData from '../../static/loader.json';
 
 const query = graphql`
     query{
@@ -60,6 +62,10 @@ const query = graphql`
 `;
 
 const useStyles = makeStyles(theme => ({
+  animationContainer: {
+    height: '100vh',
+    alignItems: 'center'
+  },
   root: {
     display: 'flex',
   },
@@ -101,54 +107,88 @@ const useStyles = makeStyles(theme => ({
 
 const HomePage = () => {
   const classes = useStyles();
+  const [loading, setLoading] = useState(true);
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true, 
+    animationData: animationData.default,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice'
+    }
+  };
+
+  async function onRender() {
+    await setTimeout(() => setLoading(false), 2000);
+  }
+
+  useEffect(() => {
+    onRender();
+  }, []);
 
   return (
-    <StaticQuery
-      query={query}
-      render={data => {
-        const authorDetails = data.allContentfulAuthor.edges[0].node;
-        const authorContactDetails = authorDetails.links;
-        const articleGroups = data.allContentfulArticles.group;
+    <Fragment>
+      {loading
+        ? (
+        <Grid container className={classes.animationContainer}>
+          <Lottie
+            options={defaultOptions}
+            height={300}
+            width={300}
+            isStopped={!loading}
+          />
+        </Grid>
+        )
+        : (
+        <StaticQuery
+          query={query}
+          render={data => {
+            const authorDetails = data.allContentfulAuthor.edges[0].node;
+            const authorContactDetails = authorDetails.links;
+            const articleGroups = data.allContentfulArticles.group;
 
-        return (
-          <div className={classes.root}>
-            <Helmet title={authorDetails.name.charAt(0).toUpperCase() + authorDetails.name.slice(1)}/>
-            <CssBaseline />
-            <Sidebar contactInfo={authorContactDetails} />
-            <main className={classes.content}>
-              <Grid container direction="column">
-                <MyInfo info={authorDetails} />
-                <Divider variant="fullWidth" className={classes.divider}/>
-                
-                  {articleGroups.map((group, index) => {
-                    const { fieldValue, edges: articles } = group;
-                    const isLastSection = (index === articleGroups.length - 1);
+            return (
+              <div className={classes.root}>
+                <Helmet title={authorDetails.name.charAt(0).toUpperCase() + authorDetails.name.slice(1)}/>
+                <CssBaseline />
+                <Sidebar contactInfo={authorContactDetails} />
+                <main className={classes.content}>
+                  <Grid container direction="column">
+                    <MyInfo info={authorDetails} />
+                    <Divider variant="fullWidth" className={classes.divider}/>
+                    
+                      {articleGroups.map((group, index) => {
+                        const { fieldValue, edges: articles } = group;
+                        const isLastSection = (index === articleGroups.length - 1);
 
-                    return (
-                      <Grid item container key={fieldValue}>
-                        <Grid item container className={classes.articleHeader}>
-                          <Typography variant="h5" className={classes.articleHeaderText}>{fieldValue}</Typography>
-                          <Divider className={classes.articleHeaderDivider} />
-                        </Grid>
-                        <Grid item container justify="center" alignItems="center" className={classes.section}>
-                          {articles.map(article => <Article key={article.node.title} article={article.node} />)}
-                        </Grid>
-                        {!isLastSection
-                          && (
-                          <Grid item xs={12} className={classes.section}>
-                            <Divider variant="fullWidth" className={classes.divider} />
+                        return (
+                          <Grid item container key={fieldValue}>
+                            <Grid item container className={classes.articleHeader}>
+                              <Typography variant="h5" className={classes.articleHeaderText}>{fieldValue}</Typography>
+                              <Divider className={classes.articleHeaderDivider} />
+                            </Grid>
+                            <Grid item container justify="center" alignItems="center" className={classes.section}>
+                              {articles.map(article => <Article key={article.node.title} article={article.node} />)}
+                            </Grid>
+                            {!isLastSection
+                              && (
+                              <Grid item xs={12} className={classes.section}>
+                                <Divider variant="fullWidth" className={classes.divider} />
+                              </Grid>
+                              )
+                            }
                           </Grid>
-                          )
-                        }
-                      </Grid>
-                    );
-                  })}
-              </Grid>
-            </main>
-          </div>
-        )}
+                        );
+                      })}
+                  </Grid>
+                </main>
+              </div>
+            )}
+          }
+        />
+        )
       }
-    />
+    </Fragment>
   )
 }
     
