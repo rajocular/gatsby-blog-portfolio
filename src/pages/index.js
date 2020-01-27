@@ -4,7 +4,8 @@ import {
   Grid,
   makeStyles,
   Divider,
-  CssBaseline
+  CssBaseline,
+  Typography
 } from "@material-ui/core";
 
 import { graphql, StaticQuery } from "gatsby";
@@ -15,45 +16,48 @@ import Article from "../components/article";
 
 const query = graphql`
     query{
-        allContentfulArticles(sort: {fields:order, order:ASC}){
-            edges{
-                node{
-                    title
-                    articleUrl
-                    description{
-                      description
-                    }
-                    image{
-                        file{
-                            fileName
-                            url
-                        }
-                    }
+      allContentfulArticles(sort: {fields:order, order:ASC}) {
+        group(field: category) {
+          fieldValue
+          edges{
+            node{
+              title
+              articleUrl
+              description{
+                description
+              }
+              image{
+                file{
+                  fileName
+                  url
                 }
+              }
             }
+          }
         }
-        allContentfulAuthor{
-            edges{
-                node{
-                    name
-                    aboutMe
-                    links{
-                        linkedin
-                        github
-                        contact
-                        email
-                    }
-                    avatar{
-                        file{
-                            fileName
-                            url
-                        }
-                    }
-                }
-            }
-        }
+      }
+      allContentfulAuthor{
+          edges{
+              node{
+                  name
+                  aboutMe
+                  links{
+                      linkedin
+                      github
+                      contact
+                      email
+                  }
+                  avatar{
+                      file{
+                          fileName
+                          url
+                      }
+                  }
+              }
+          }
+      }
     }
-`
+`;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -69,9 +73,26 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     font: 'Open Sans',
   },
-  articlesContainer: {
+  articleHeader: {
     alignItems: 'center',
-    marginTop: '32px',
+    flexDirection: 'column',
+    padding: '16px 32px',
+
+    [theme.breakpoints.up('lg')]: {
+      padding: theme.spacing(4)
+    }
+  },
+  articleHeaderText: {
+    fontFamily: 'Georgia, serif',
+  },
+  articleHeaderDivider: {
+    margin: '4px 0',
+    height: '4px',
+    width: '40px',
+    backgroundColor: '#566573',
+  },
+  section: {
+    padding: '16px 0'
   },
   divider: {
     margin: 0,
@@ -87,7 +108,7 @@ const HomePage = () => {
       render={data => {
         const authorDetails = data.allContentfulAuthor.edges[0].node;
         const authorContactDetails = authorDetails.links;
-        const articles = data.allContentfulArticles.edges;
+        const articleGroups = data.allContentfulArticles.group;
 
         return (
           <div className={classes.root}>
@@ -98,13 +119,30 @@ const HomePage = () => {
               <Grid container direction="column">
                 <MyInfo info={authorDetails} />
                 <Divider variant="fullWidth" className={classes.divider}/>
-                <Grid
-                  item
-                  container
-                  className={classes.articlesContainer}
-                >
-                  {articles.map(data => <Article article={data.node} key={data.node.title} />)}
-                </Grid>
+                
+                  {articleGroups.map((group, index) => {
+                    const { fieldValue, edges: articles } = group;
+                    const isLastSection = (index === articleGroups.length - 1);
+
+                    return (
+                      <Grid item container key={fieldValue}>
+                        <Grid item container className={classes.articleHeader}>
+                          <Typography variant="h5" className={classes.articleHeaderText}>{fieldValue}</Typography>
+                          <Divider className={classes.articleHeaderDivider} />
+                        </Grid>
+                        <Grid item container justify="center" alignItems="center" className={classes.section}>
+                          {articles.map(article => <Article key={article.node.title} article={article.node} />)}
+                        </Grid>
+                        {!isLastSection
+                          && (
+                          <Grid item xs={12} className={classes.section}>
+                            <Divider variant="fullWidth" className={classes.divider} />
+                          </Grid>
+                          )
+                        }
+                      </Grid>
+                    );
+                  })}
               </Grid>
             </main>
           </div>

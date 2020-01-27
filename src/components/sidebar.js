@@ -8,12 +8,12 @@ import {
   FaLinkedin,
   FaGithub,
   FaPhone,
-  FaEnvelope
+  FaEnvelope,
 } from 'react-icons/fa';
 
 const drawerWidth = 80;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   linkContainer: {
     height: '100%',
     flexDirection: 'column',
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
       color: '#000'
     }
   }
-}));
+});
 
 const Sidebar = ({ contactInfo }) => {
   const classes = useStyles();

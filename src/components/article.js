@@ -4,7 +4,6 @@ import {
   Grid,
   Typography,
   Avatar,
-  Divider,
   makeStyles,
   useMediaQuery,
 } from '@material-ui/core';
@@ -86,14 +85,11 @@ const useStyles = makeStyles(theme => ({
       fontWeight: 'normal'
     }
   },
-  divider: {
-    margin: 0,
-    width: '100%'
-  },
 }));
 
 const Article = ({ article }) => {
   const classes = useStyles();
+
   const {
     image,
     title,
@@ -105,7 +101,7 @@ const Article = ({ article }) => {
   const openLink = () => {
     const newTab = window.open(articleUrl, '_blank');
     newTab.focus()
-  }
+  };
 
   return (
     <Fragment>
@@ -140,14 +136,11 @@ const Article = ({ article }) => {
       </Grid>
       {isSmall
         && (
-        <Fragment>
-          <Grid item className={classes.descriptionContainer}>
-            <Typography variant="body1" className={classes.description}>
-              {description && description.description}
-            </Typography>
-          </Grid>
-          <Divider className={classes.divider}/>
-        </Fragment>
+        <Grid item className={classes.descriptionContainer}>
+          <Typography variant="body1" className={classes.description}>
+            {description && description.description}
+          </Typography>
+        </Grid>
         )
       }
     </Fragment>

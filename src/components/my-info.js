@@ -6,7 +6,7 @@ import {
   Typography,
 } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   container: {
     padding: 24,
     alignItems: 'center',
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   text: {
     fontFamily: 'Georgia, serif'
   }
-}))
+});
 
 const MyInfo = ({ info }) => {
   const classes = useStyles();
