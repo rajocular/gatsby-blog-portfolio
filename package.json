@@ -11,7 +11,8 @@
     "start": "npm run develop",
     "serve": "gatsby serve",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\"",
-    "clean": "rm -rf .cache"
+    "clean": "rm -rf .cache",
+    "deploy": "env-cmd .env.deployment gatsby build && aws s3 cp public/. s3://gatsby-portfolio-2 --recursive --profile command-line-access"
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "13.2.0",

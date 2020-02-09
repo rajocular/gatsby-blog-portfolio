@@ -76,13 +76,15 @@ const useStyles = makeStyles(theme => ({
   },
   description: {
     fontFamily: 'Georgia, serif',
-    color: 'white',
-    fontWeight: 'bold',
+    color: 'black',
+    fontWeight: 'normal',
     margin: 'auto',
 
-    [theme.breakpoints.down('md')]: {
-      color: 'black',
-      fontWeight: 'normal'
+    [theme.breakpoints.up('lg')]: {
+      color: 'white',
+      fontWeight: 'bold',
+      overflowY: 'auto',
+      height: '100%'
     }
   },
 }));
@@ -99,6 +101,8 @@ const Article = ({ article }) => {
   const isSmall = useMediaQuery('(max-width: 1280px)');
 
   const openLink = () => {
+    if (articleUrl === 'fake') return;
+
     const newTab = window.open(articleUrl, '_blank');
     newTab.focus()
   };

@@ -38,7 +38,7 @@ const useStyles = makeStyles({
     height: '32px',
     width: '32px',
     '&:hover': {
-      color: '#000'
+      color: '#363636'
     }
   }
 });
@@ -69,30 +69,50 @@ const Sidebar = ({ contactInfo }) => {
       >
         {linkedin && (
           <Grid item className={classes.link}>
-            <a href={linkedin} target="_blank" rel="noopener noreferrer">
-              <FaLinkedin className={classes.icon}/>
-            </a>
+            {linkedin === 'fake'
+              ? <FaLinkedin className={classes.icon}/>
+              : (
+              <a href={linkedin} target="_blank" rel="noopener noreferrer">
+                <FaLinkedin className={classes.icon}/>
+              </a>
+              )
+            }
           </Grid>
         )}
         {github && (
           <Grid item className={classes.link}>
-            <a href={github}>
-              <FaGithub className={classes.icon}/>
-            </a>
+            {github === 'fake'
+              ? <FaGithub className={classes.icon}/>
+              : (
+              <a href={github}>
+                <FaGithub className={classes.icon}/>
+              </a>
+              )
+            }
           </Grid>
         )}
         {email && (
           <Grid item className={classes.link}>
-            <a href={'mailto:'+ email}>
-              <FaEnvelope className={classes.icon}/>
-            </a>
+            {email === 'fake'
+              ? <FaEnvelope className={classes.icon}/>
+              : (
+              <a href={'mailto:'+ email}>
+                <FaEnvelope className={classes.icon}/>
+              </a>
+              )
+            }
           </Grid>
         )}
         {contact && (
           <Grid item className={classes.link}>
-            <a href={"tel:"+ contact}>
-              <FaPhone className={classes.icon}/>
-            </a>
+            {contact === 'fake'
+              ? <FaPhone className={classes.icon}/>
+              : (
+              <a href={"tel:"+ contact}>
+                <FaPhone className={classes.icon}/>
+              </a>
+              )
+            }
           </Grid>
         )}
       </Grid>
