@@ -1,0 +1,24 @@
+body {
+  margin: 0;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+@font-face {
+  font-family: "Teko";
+  src: url('../assets/fonts/Teko-Regular.ttf');
+}
+
+@font-face {
+  font-family: "Teko Medium";
+  src: url('../assets/fonts/Teko-Medium.ttf');
+}
+
+@font-face {
+  font-family: "Teko Bold";
+  src: url('../assets/fonts/Teko-Bold.ttf');
+}
