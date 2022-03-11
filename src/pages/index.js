@@ -62,7 +62,7 @@ const query = graphql`
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: '#EBE645',
+    backgroundColor: '#FFC600',
     overflow: 'auto',
     position: 'relative'
   },

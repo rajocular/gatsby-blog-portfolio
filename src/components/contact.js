@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
       },
 
       '& svg': {
-        color: '#EBE645',
+        color: '#FFC600',
       }
     }
   },

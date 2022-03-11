@@ -60,7 +60,7 @@ const useStyles = makeStyles(theme => ({
     display: 'none',
     width: 'inherit',
     height: 'inherit',
-    color: '#EBE645'
+    color: '#FFC600'
   },
   link: {
     textDecoration: 'none',
